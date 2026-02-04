@@ -25,10 +25,21 @@ jobs:
         with:
           node-version: 18
 
-      - name: Run Promptfoo
+      - name: Run PromptFoo classify evaluation
         working-directory: promptfoo-tests
-        run: |
-          npx promptfoo@latest eval -c classify.yaml
+        run: npx promptfoo@latest eval -c classify.yaml
+
+      - name: Run PromptFoo sentiment evaluation
+        working-directory: promptfoo-tests
+        run: npx promptfoo@latest eval -c sentiment.yaml
+
+      - name: Run PromptFoo summarize evaluation
+        working-directory: promptfoo-tests
+        run: npx promptfoo@latest eval -c summarize.yaml
+
+      - name: Run PromptFoo intent evaluation
+        working-directory: promptfoo-tests
+        run: npx promptfoo@latest eval -c intent.yaml
 
       - name: Cleanup
         if: always()
