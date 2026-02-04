@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  llm-python:
+    image: llm-python:latest
+    build:
+      context: ./llm-python
+    container_name: llm-python
+    ports:
+      - "8080:8080"
+    environment:
+      # If llm-python calls Ollama running on your host:
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+    networks:
+      - llm-net
+
+  llm-frontend:
+    image: llm-frontend:latest
+    build:
+      context: ./llm-frontend-python
+    container_name: llm-frontend
+    ports:
+      - "5000:5000"
+    environment:
+      # IMPORTANT: inside Docker, frontend must call backend by service name
+      - BACKEND_URL=http://llm-python:8080
+    depends_on:
+      - llm-python
+    networks:
+      - llm-net
+
+networks:
+  llm-net:
+    driver: bridge
